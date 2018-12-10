@@ -86,10 +86,10 @@ router.put("", (req, res) => {
 });
 
 //Delete Customer of a car
-router.delete("", (req, res) => {
-    const chassisNumber = req.body.chassisNumber;
+router.delete("/:chassisNumber", (req, res) => {
+    const chassisNumber = req.params.chassisNumber;
 
-    if (Object.keys(req.body).length === 0) {
+    if (Object.keys(req.params).length === 0) {
         responseMessages.ErrorCode412MissingValues(res);
     } else if (chassisNumber != null) {
         Car.findOne({ chassisNumber: chassisNumber }, function (err, carDocs) {

@@ -96,10 +96,10 @@ router.put("", (req, res) => {
 });
 
 //Delete 1 Employee
-router.delete("", (req, res) => {
-    const employeeID = req.body.employeeID;
+router.delete("/:employeeID", (req, res) => {
+    const employeeID = req.params.employeeID;
 
-    if (Object.keys(req.body).lenth === 0) {
+    if (Object.keys(req.params).length === 0) {
         responseMessages.ErrorCode412MissingValues(res);
     } else if (employeeID != null) {
         Employee.findOne({ _id: employeeID }, function (err, docs) {
