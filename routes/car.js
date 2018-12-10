@@ -45,7 +45,9 @@ router.post("", (req, res) => {
             chassisNumber: chassisNumber,
             brand: brand,
             fuelType: fuelType,
-            typeCar: typeCar
+            typeCar: typeCar,
+            ownedBy: null,
+            soldBy: null
         });
 
         newCar.save()
