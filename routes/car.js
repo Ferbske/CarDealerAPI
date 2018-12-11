@@ -130,11 +130,11 @@ router.put("/employee", (req, res) => {
             if (err || carDocs === null) {
                 responseMessages.ErrorCode412MissingValues(res);
             } else {
-                Employee.findOne({ _id: employeeID }, function (err, empDocs) {
-                    if (err || empDocs === null) {
+                Employee.find({ _id: employeeID }, function (err, empDocs) {
+                    if (err || empDocs === null || empDocs.length === 0) {
                         responseMessages.ErrorCode422(res);
                     } else {
-                        carDocs.soldBy = empDocs._id;
+                        carDocs.soldBy = empDocs[0]._id;
                         carDocs.save()
                             .then(() => {
                                 responseMessages.SuccessCode200UpdateSoldBy(res, chassisNumber, employeeID);
