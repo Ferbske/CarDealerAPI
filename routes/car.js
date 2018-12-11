@@ -117,4 +117,59 @@ router.delete("/:chassisNumber", (req, res) => {
     }
 });
 
+//Add Employee to Car
+router.put("/employee", (req, res) => {
+    const chassisNumber = req.body.chassisNumber;
+    const employeeID = req.body.employeeID;
+
+    if (Object.keys(req.body).length === 0) {
+        responseMessages.ErrorCode412MissingValues(res);
+    }  else if (chassisNumber != null && employeeID) {
+        Car.findOne({ chassisNumber: chassisNumber }, function (err, docs) {
+            if (err || docs === null) {
+                responseMessages.ErrorCode412MissingValues(res);
+            } else {
+                docs.soldBy = employeeID;
+                docs.save()
+                    .then(() => {
+                        responseMessages.SuccessCode200UpdateSoldBy(res, chassisNumber, employeeID);
+                    })
+                    .catch(err => {
+                        console.warn(err);
+                        responseMessages.ErrorCode409Duplicate(res);
+                    });
+            }
+        })
+    } else {
+        responseMessages.ErrorCode412MissingValues(res);
+    }
+});
+
+//Delete Employee from Car
+router.delete("/employee/:chassisNumber", (req, res) => {
+    const chassisNumber = req.params.chassisNumber;
+
+    if (Object.keys(req.params).length === 0) {
+        responseMessages.ErrorCode412MissingValues(res);
+    } else if (chassisNumber != null) {
+        Car.findOne({ chassisNumber: chassisNumber }, function (err, docs) {
+            if (err || !docs) {
+                responseMessages.ErrorCode412MissingValues(res);
+            } else {
+                // Car.deleteOne({ "chassisNumber": chassisNumber })
+                //     .then(() => {
+                //         responseMessages.SuccessCode204(res);
+                //     }
+                docs.soldBy = null;
+                docs.save()
+                    .then(() => {
+                        responseMessages.SuccessCode204(res);
+                    });
+            }
+        })
+    } else {
+        responseMessages.ErrorCode412MissingValues(res);
+    }
+});
+
 module.exports = router;
