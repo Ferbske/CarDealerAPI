@@ -90,6 +90,17 @@ function SuccessCode200UpdateCustomer(result, chassisNumber, firstName, lastName
     });
 }
 
+function SuccessCode200UpdateSoldBy(result, chassisNumber, employeeID) {
+    result.status(200).json({
+        code: 200,
+        message: {
+            chassisNumber: chassisNumber,
+            employeeID: employeeID
+        },
+        datetime: moment().format()
+    });
+}
+
 function SuccessCode201CreateCar(result, chassisNumber, brand, fuelType, typeCar) {
     result.status(201).json({
         code: 201,
@@ -146,6 +157,7 @@ module.exports = {
     SuccessCode200UpdateCar,
     SuccessCode200UpdateEmployee,
     SuccessCode200UpdateCustomer,
+    SuccessCode200UpdateSoldBy,
     SuccessCode201CreateCar,
     SuccessCode201CreateEmployee,
     SuccessCode201CreateCustomer,

@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const Car = require("../src/car");
+const Employee = require("../src/employee");
 const router = express.Router();
 const responseMessages = require("../responseMessages");
 
@@ -107,6 +108,63 @@ router.delete("/:chassisNumber", (req, res) => {
                 responseMessages.ErrorCode412MissingValues(res);
             } else {
                 Car.deleteOne({ "chassisNumber": chassisNumber })
+                    .then(() => {
+                        responseMessages.SuccessCode204(res);
+                    });
+            }
+        })
+    } else {
+        responseMessages.ErrorCode412MissingValues(res);
+    }
+});
+
+//Add Employee to Car
+router.put("/employee", (req, res) => {
+    const chassisNumber = req.body.chassisNumber;
+    const employeeID = req.body.employeeID;
+
+    if (Object.keys(req.body).length === 0) {
+        responseMessages.ErrorCode412MissingValues(res);
+    }  else if (chassisNumber != null && employeeID) {
+        Car.findOne({ chassisNumber: chassisNumber }, function (err, carDocs) {
+            if (err || carDocs === null) {
+                responseMessages.ErrorCode412MissingValues(res);
+            } else {
+                Employee.findOne({ _id: employeeID }, function (err, empDocs) {
+                    if (err || empDocs === null) {
+                        responseMessages.ErrorCode422(res);
+                    } else {
+                        carDocs.soldBy = empDocs._id;
+                        carDocs.save()
+                            .then(() => {
+                                responseMessages.SuccessCode200UpdateSoldBy(res, chassisNumber, employeeID);
+                            })
+                            .catch(err => {
+                                console.warn(err);
+                                responseMessages.ErrorCode409Duplicate(res);
+                            });
+                    }
+                })
+            }
+        })
+    } else {
+        responseMessages.ErrorCode412MissingValues(res);
+    }
+});
+
+//Delete Employee from Car
+router.delete("/employee/:chassisNumber", (req, res) => {
+    const chassisNumber = req.params.chassisNumber;
+
+    if (Object.keys(req.params).length === 0) {
+        responseMessages.ErrorCode412MissingValues(res);
+    } else if (chassisNumber != null) {
+        Car.findOne({ chassisNumber: chassisNumber }, function (err, docs) {
+            if (err || !docs) {
+                responseMessages.ErrorCode412MissingValues(res);
+            } else {
+                docs.soldBy = null;
+                docs.save()
                     .then(() => {
                         responseMessages.SuccessCode204(res);
                     });
