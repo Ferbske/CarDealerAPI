@@ -1,15 +1,15 @@
 {
   "name": "cardealer",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "private": true,
   "scripts": {
     "start": "set NODE_ENV=production& nodemon app.js",
     "test": "set NODE_ENV=test& nodemon --exec mocha",
     "test-Cloud": "set NODE_ENV=testCloud& nodemon --exec mocha"
   },
-  "author": "",
-  "license": "ISC",
+  "engines": {
+    "node": "8.11.1"
+  },
   "dependencies": {
     "debug": "~2.6.9",
     "express": "~4.16.0",

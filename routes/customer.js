@@ -43,7 +43,7 @@ router.post("", (req, res) => {
             }
         });
     } else {
-        responseMessages.ErrorCode412(result);
+        responseMessages.ErrorCode412MissingValues(res);
     }
 });
 
@@ -81,7 +81,7 @@ router.put("", (req, res) => {
             }
         });
     } else {
-        responseMessages.ErrorCode412(result);
+        responseMessages.ErrorCode412MissingValues(res);
     }
 });
 
@@ -108,7 +108,7 @@ router.delete("/:chassisNumber", (req, res) => {
             }
         });
     } else {
-        responseMessages.ErrorCode412(result);
+        responseMessages.ErrorCode412MissingValues(res);
     }
 });
 
