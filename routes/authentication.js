@@ -18,10 +18,9 @@ router.all(new RegExp("^(?!\/login$|\/register$).*"), (request, response, next) 
 });
 
 router.post("/register", (req, res) => {
-    const body = req.body;
-    const username = body.username;
-    const email = body.email;
-    const password = body.password;
+    const username = req.body.username;
+    const email = req.body.email;
+    const password = req.body.password;
     if (!username && !email && password) {
         responseMessages.ErrorCode412MissingValues(res);
         return;
@@ -30,9 +29,8 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-    const body = req.body;
-    const username = body.username;
-    const password = body.password;
+    const username = req.body.username;
+    const password = req.body.password;
     if (!username && !password) {
         responseMessages.ErrorCode412MissingValues(res);
         return;
@@ -41,9 +39,8 @@ router.post("/login", (req, res) => {
 });
 
 router.post("/user/changepassword", (req, res) => {
-    const body = req.body;
-    const password = body.password;
-    const newPassword = body.newPassword;
+    const password = req.body.password;
+    const newPassword = req.body.newPassword;
     if (!password && !newPassword) {
         responseMessages.ErrorCode412MissingValues(res);
         return;
@@ -52,8 +49,7 @@ router.post("/user/changepassword", (req, res) => {
 });
 
 router.delete("/user", (req, res) => {
-    const body = req.body;
-    const password = body.password;
+    const password = req.body.password;
     if (!password) {
         responseMessages.ErrorCode412MissingValues(res);
         return;
