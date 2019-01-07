@@ -18,6 +18,7 @@ router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
 });
 
 router.post("/register", (req, res) => {
+    console.log(req.body);
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
