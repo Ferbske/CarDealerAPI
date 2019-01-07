@@ -10,6 +10,7 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.use("/", require("./routes/authentication"));
 app.use("/car", require("./routes/car"));
 app.use("/employee", require("./routes/employee"));
 app.use("/customer", require("./routes/customer"));
