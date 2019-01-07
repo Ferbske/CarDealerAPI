@@ -18,15 +18,27 @@ router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
 });
 
 router.post("/register", (req, res) => {
-    console.log(req.body);
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
-    if (!username && !email && password) {
+    if (Object.keys(req.body).length === 0) {
         responseMessages.ErrorCode412MissingValues(res);
-        return;
+    } else if (username != null && email != null && password != null) {
+        const newUser = new User({
+            username: username,
+            email: email,
+            password: password
+        });
+
+        newUser.save()
+            .then(() => {
+                res.status(200).json({token: auth.encodeToken(username)})
+            })
+            .catch(err => {
+                console.warn(err);
+                responseMessages.ErrorCode409Duplicate(res);
+            })
     }
-    User.createUser(username, email, password, res);
 });
 
 router.post("/login", (req, res) => {
