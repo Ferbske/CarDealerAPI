@@ -5,8 +5,8 @@ const responseMessages = require("../responseMessages");
 const Isemail = require('isemail');
 const User = require('../src/repositories/userRepo');
 
-router.all(new RegExp("^(?!\/login$|\/register$).*"), (request, response, next) => {
-    const token = request.header('X-Access-Token');
+router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
+    const token = req.header('X-Access-Token');
     auth.decodeToken(token, (error, payload) => {
         if (error) {
             responseMessages.ErrorCode401(res);
