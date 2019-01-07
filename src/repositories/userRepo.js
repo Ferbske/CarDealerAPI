@@ -12,9 +12,9 @@ class UserRepository {
                     newUser.save()
                         .then(() => res.status(200).json({token: auth.encodeToken(username)}))
                         .catch(() => res.status(500).json(responseMessages.ErrorCode401(res)))
-                } else res.status(420).json(responseMessages.ErrorCode409Duplicate(res));
+                } else responseMessages.ErrorCode409Duplicate(res);
             })
-            .catch(() => {res.status(500).json(responseMessages.ErrorCode401(res))}
+            .catch(() => { responseMessages.ErrorCode401(res)}
             );
     };
 
@@ -22,9 +22,9 @@ class UserRepository {
         User.findOne({username})
             .then((user) => {
                 if(user.password === password) res.status(200).json({token: auth.encodeToken(username)});
-                else res.status(401).json(responseMessages.ErrorCode401(res));
+                else responseMessages.ErrorCode401(res);
             })
-            .catch(() => {res.status(401).json(responseMessages.ErrorCode401(res))});
+            .catch(() => { responseMessages.ErrorCode401(res)});
 
     };
 
