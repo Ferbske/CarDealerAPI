@@ -13,6 +13,8 @@
   "dependencies": {
     "debug": "~2.6.9",
     "express": "~4.16.0",
+    "isemail": "^3.2.0",
+    "jwt-simple": "^0.5.5",
     "mocha": "^5.2.0",
     "moment": "^2.22.2",
     "mongoose": "^5.3.13",
