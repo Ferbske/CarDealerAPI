@@ -1,9 +1,13 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const router = express.Router();
 const auth = require('../src/authentication/authentication');
 const responseMessages = require("../responseMessages");
 const Isemail = require('isemail');
 const User = require('../src/repositories/userRepo');
+
+router.use(bodyParser.json()); // support json encoded bodies
+router.use(bodyParser.urlencoded({extended: true}));
 
 router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
     const token = req.header('X-Access-Token');
