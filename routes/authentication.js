@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const auth = require('../authentication/authentication');
+const auth = require('../src/authentication/authentication');
 const responseMessages = require("../responseMessages");
 const Isemail = require('isemail');
 const User = require('../src/repositories/userRepo');

@@ -1,5 +1,5 @@
 const auth = require('../authentication/authentication');
-const User = require('../src/user');
+const User = require('../user');
 const responseMessages = require("../../responseMessages");
 
 class UserRepository {
