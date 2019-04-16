@@ -10,26 +10,15 @@ router.use(bodyParser.json()); // support json encoded bodies
 router.use(bodyParser.urlencoded({extended: true}));
 
 router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
-    // const token = req.header('X-Access-Token');
-    //     // auth.decodeToken(token, (error, payload) => {
-    //     //     if (error) {
-    //     //         responseMessages.ErrorCode401(res);
-    //     //     } else {
-    //     //         request.user = {username: payload.sub};
-    //     //         next();
-    //     //     }
-    //     // })
-    next();
-});
-
-router.post("/register", (req, res) => {
-    const username = req.body.username;
-    const email = req.body.email;
-    const password = req.body.password;
-    if (Object.keys(req.body).length === 0) {
-        responseMessages.ErrorCode412MissingValues(res);
-    }
-    User.createUser(username, email, password, res);
+    const token = req.header('X-Access-Token');
+    auth.decodeToken(token, (error, payload) => {
+        if (error) {
+            console.log('Authentication error: ' + error.message);
+        } else {
+            request.user = {username: payload.sub};
+            next();
+        }
+    })
 });
 
 router.post("/login", (req, res) => {
@@ -40,6 +29,16 @@ router.post("/login", (req, res) => {
         return;
     }
     User.login(username, password, res);
+});
+
+router.post("/register", (req, res) => {
+    const username = req.body.username;
+    const email = req.body.email;
+    const password = req.body.password;
+    if (Object.keys(req.body).length === 0) {
+        responseMessages.ErrorCode412MissingValues(res);
+    }
+    User.createUser(username, email, password, res);
 });
 
 router.post("/user/changepassword", (req, res) => {
