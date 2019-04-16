@@ -9,17 +9,17 @@ const User = require('../src/repositories/userRepo');
 router.use(bodyParser.json()); // support json encoded bodies
 router.use(bodyParser.urlencoded({extended: true}));
 
-router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
-    const token = req.header('X-Access-Token');
-    auth.decodeToken(token, (error, payload) => {
-        if (error) {
-            responseMessages.ErrorCode401(res);
-        } else {
-            request.user = {username: payload.sub};
-            next();
-        }
-    })
-});
+// router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
+//     const token = req.header('X-Access-Token');
+//     auth.decodeToken(token, (error, payload) => {
+//         if (error) {
+//             responseMessages.ErrorCode401(res);
+//         } else {
+//             request.user = {username: payload.sub};
+//             next();
+//         }
+//     })
+// });
 
 router.post("/register", (req, res) => {
     const username = req.body.username;
