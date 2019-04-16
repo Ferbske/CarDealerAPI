@@ -15,8 +15,11 @@ class UserRepository {
                         password: password
                     });
                     return newUser.save()
-                        .then(() => res.status(200).json({token: auth.encodeToken(username)}))
-                        .catch(() => res.status(500).json(console.log("Creating user failed in user repo 1")))
+                        .then(() => res.status(200).json({
+                            response: 'user has been created',
+                            token: auth.encodeToken(username)
+                        }))
+                    .catch(() => res.status(500).json(console.log("Creating user failed in user repo 1")))
                 } else responseMessages.ErrorCode409Duplicate(res);
             })
             .catch(() => { console.log("Creating user failed in user repo 2")}
