@@ -14,7 +14,7 @@ class UserRepository {
                         .catch(() => res.status(500).json(responseMessages.ErrorCode401(res)))
                 } else responseMessages.ErrorCode409Duplicate(res);
             })
-            .catch(() => { responseMessages.ErrorCode401(res)}
+            .catch(() => { console.log("Creating user failed in user repo")}
             );
     };
 
