@@ -5,7 +5,7 @@ const responseMessages = require("../../responseMessages");
 class UserRepository {
     static createUser(username, email, password, res) {
 
-
+        console.log(username + email + password);
         User.findOne({username})
             .then((user) => {
                 if (user === null) {
