@@ -4,12 +4,17 @@ const responseMessages = require("../../responseMessages");
 
 class UserRepository {
     static createUser(username, email, password, res) {
-        const newUser = new User({ username: username, email: email, password: password });
+
 
         User.findOne({username})
             .then((user) => {
                 if (user === null) {
-                    newUser.save()
+                    const newUser = new User({
+                        username: username,
+                        email: email,
+                        password: password
+                    });
+                    return newUser.save()
                         .then(() => res.status(200).json({token: auth.encodeToken(username)}))
                         .catch(() => res.status(500).json(console.log("Creating user failed in user repo 1")))
                 } else responseMessages.ErrorCode409Duplicate(res);
