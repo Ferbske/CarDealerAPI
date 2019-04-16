@@ -14,6 +14,7 @@ router.all(new RegExp("^(?!\/login$|\/register$).*"), (req, res, next) => {
     auth.decodeToken(token, (error, payload) => {
         if (error) {
             console.log('Authentication error: ' + error.message);
+            responseMessages.ErrorCode401(res);
         } else {
             request.user = {username: payload.sub};
             next();
