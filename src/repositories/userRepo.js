@@ -5,7 +5,6 @@ const responseMessages = require("../../responseMessages");
 class UserRepository {
     static createUser(username, email, password, res) {
 
-        console.log(username + email + password);
         User.findOne({username})
             .then((user) => {
                 if (user === null) {
@@ -14,6 +13,7 @@ class UserRepository {
                         email: email,
                         password: password
                     });
+                    console.log(newUser);
                     return newUser.save()
                         .then(() => res.status(200).json({
                             response: 'user has been created',
