@@ -17,10 +17,11 @@ function encodeToken(username) {
 // Decode (token to username)
 function decodeToken(token, cb) {
     try {
+        console.log(config.secretKey);
         const payload = jwt.decode(token, config.secretKey, null, null);
-        const now = moment().unix();
+        const now = moment().now();
 
-        if (now > payload.exp) console.log('Token has expired.');
+        // if (now > payload.exp) console.log('Token has expired.');
 
         // Return
         cb(null, payload);
