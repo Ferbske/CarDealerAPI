@@ -3,7 +3,7 @@ const moment = require("moment");
 function ErrorCode401(result) {
     result.status(401).json({
         code: 401,
-        message: "Unauthorized to execute this action",
+        message: "Unauthorized",
         datetime: moment().format()
     });
 }
