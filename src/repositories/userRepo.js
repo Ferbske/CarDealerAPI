@@ -27,7 +27,7 @@ class UserRepository {
                                 // res.status(500).json({
                                 //     error: console.log("Creating user failed in user repo 1")
                                 // }));
-                            responseMessages.Errorcode500(res);
+                            responseMessages.Errorcode500(res)
                             );
                     } catch (e) {
                         console.log("error saving user " + e);
