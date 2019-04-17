@@ -13,19 +13,14 @@ class UserRepository {
                         email: email,
                         password: password
                     });
-                    console.log(newUser);
-                    
+
                     const token = auth.encodeToken(username);
-                    console.log(token);
 
                     newUser.save()
-                        .then(() => (
-                            // res.status(200).json({
-                            //     response: 'user has been created',
-                            //     token: auth.encodeToken(username)
-                            // }))
-                            responseMessages.Successcode201CreateUser(res, token)
-                        ))
+                        .then(() => {
+                            console.log("Saved");
+                            responseMessages.Successcode201CreateUser(res, token);
+                        })
                         .catch(() =>
                             responseMessages.Errorcode500(res)
                         );
