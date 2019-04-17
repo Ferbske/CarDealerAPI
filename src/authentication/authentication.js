@@ -17,16 +17,9 @@ function encodeToken(username) {
 // Decode (token to username)
 function decodeToken(token, cb) {
     try {
-        console.log("Voor");
         const payload = jwt.decode(token, config.secretKey, null, null);
-        // const now = moment().now();
-        console.log("Na " + payload);
-
-        // if (now > payload.exp) console.log('Token has expired.');
-
         // Return
         cb(null, payload);
-
     } catch(err) { cb(err, null);}
 }
 

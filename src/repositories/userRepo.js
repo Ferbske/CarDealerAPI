@@ -7,6 +7,7 @@ class UserRepository {
 
         User.findOne({username})
             .then((user) => {
+                console.log("User found: " + user);
                 if (user === null) {
                     const newUser = new User({
                         username: username,
