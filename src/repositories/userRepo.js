@@ -15,13 +15,8 @@ class UserRepository {
 
                     const token = auth.encodeToken(username);
 
-                    // newUser.save()
-                    //     .then(() =>
-                    //         responseMessages.Successcode201CreateUser(res, token)
-                    //     )
-                    //     .catch(() =>
-                    //         responseMessages.Errorcode500(res)
-                    //     );
+                    console.log(newUser);
+                    
                     newUser.save()
                         .then(() => {
                             responseMessages.Successcode201CreateUser(res, token);
