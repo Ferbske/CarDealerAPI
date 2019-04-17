@@ -17,18 +17,16 @@ class UserRepository {
                     const token = auth.encodeToken(username);
 
                     newUser.save()
-                        .then(() => {
-                            console.log("Saved");
-                            responseMessages.Successcode201CreateUser(res, token);
-                        })
+                        .then(() =>
+                            responseMessages.Successcode201CreateUser(res, token)
+                        )
                         .catch(() =>
                             responseMessages.Errorcode500(res)
                         );
                 } else responseMessages.ErrorCode409Duplicate(res);
             })
-            .catch(() => {
-                    console.log("Creating user failed in user repo 2")
-                }
+            .catch(() =>
+                responseMessages.Errorcode500(res)
             );
     };
 
