@@ -13,6 +13,7 @@ class UserRepository {
                         email: email,
                         password: password
                     });
+                    console.log(newUser);
                     try {
                         newUser.save();
                         console.log("User saved");
