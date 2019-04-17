@@ -16,16 +16,17 @@ class UserRepository {
                     console.log(newUser);
                     try {
                         newUser.save()
-                            .then(() =>
-                                res.status(200).json({
-                                    response: 'user has been created',
-                                    token: auth.encodeToken(username)
-                                }))
+                            .then(() => (
+                                // res.status(200).json({
+                                //     response: 'user has been created',
+                                //     token: auth.encodeToken(username)
+                                // }))
+                                responseMessages.Successcode201CreateUser(res, auth.encodeToken(username))
+                            ))
                             .catch(() =>
                                 res.status(500).json({
                                     error: console.log("Creating user failed in user repo 1")
                                 }));
-                        console.log("User saved");
                     } catch (e) {
                         console.log("error saving user " + e);
                     }
