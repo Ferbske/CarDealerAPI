@@ -4,7 +4,6 @@ const responseMessages = require("../../responseMessages");
 
 class UserRepository {
     static createUser(username, email, password, res) {
-
         User.findOne({username})
             .then((user) => {
                 if (user === null) {
@@ -16,13 +15,21 @@ class UserRepository {
 
                     const token = auth.encodeToken(username);
 
+                    // newUser.save()
+                    //     .then(() =>
+                    //         responseMessages.Successcode201CreateUser(res, token)
+                    //     )
+                    //     .catch(() =>
+                    //         responseMessages.Errorcode500(res)
+                    //     );
                     newUser.save()
-                        .then(() =>
-                            responseMessages.Successcode201CreateUser(res, token)
-                        )
-                        .catch(() =>
-                            responseMessages.Errorcode500(res)
-                        );
+                        .then(() => {
+                            responseMessages.Successcode201CreateUser(res, token);
+                        })
+                        .catch(err => {
+                            console.warn(err);
+                            responseMessages.ErrorCode409Duplicate(res);
+                        })
                 } else responseMessages.ErrorCode409Duplicate(res);
             })
             .catch(() =>
