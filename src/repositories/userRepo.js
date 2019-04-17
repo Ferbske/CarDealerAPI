@@ -3,9 +3,9 @@ const User = require('../user');
 const responseMessages = require("../../responseMessages");
 
 class UserRepository {
-    static async createUser(username, email, password, res) {
+    static createUser(username, email, password, res) {
 
-        await User.findOne({username})
+        User.findOne({username})
             .then((user) => {
                 if (user === null) {
                     const newUser = new User({
@@ -15,18 +15,20 @@ class UserRepository {
                     });
                     console.log(newUser);
                     try {
-                        newUser.save();
+                        newUser.save()
+                            .then(() =>
+                                res.status(200).json({
+                                    response: 'user has been created',
+                                    token: auth.encodeToken(username)
+                                }))
+                            .catch(() =>
+                                res.status(500).json({
+                                    error: console.log("Creating user failed in user repo 1")
+                                }));
                         console.log("User saved");
                     } catch (e) {
                         console.log("error saving user " + e);
                     }
-                        // .then(() =>
-                        //     // console.log("Hij komt in then"))
-                        //     res.status(200).json({
-                        //         response: 'user has been created',
-                        //         token: auth.encodeToken(username)
-                        //     }))
-                        // .catch(() => res.status(500).json(console.log("Creating user failed in user repo 1")))
                 } else responseMessages.ErrorCode409Duplicate(res);
             })
             .catch(() => {
