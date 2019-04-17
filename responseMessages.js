@@ -39,6 +39,14 @@ function ErrorCode422(result) {
     });
 }
 
+function Errorcode500(res) {
+    res.status(500).json({
+        code: 500,
+        message: "Whoops something went wrong!",
+        datetime: moment().format()
+    })
+}
+
 function SuccessCode200GetAll(result, docs) {
     result.status(200).json({
         code: 200,
@@ -163,6 +171,7 @@ module.exports = {
     ErrorCode412MissingValues,
     ErrorCode412SameValues,
     ErrorCode422,
+    Errorcode500,
     SuccessCode200GetAll,
     SuccessCode200UpdateCar,
     SuccessCode200UpdateEmployee,

@@ -24,9 +24,11 @@ class UserRepository {
                                 responseMessages.Successcode201CreateUser(res, auth.encodeToken(username))
                             ))
                             .catch(() =>
-                                res.status(500).json({
-                                    error: console.log("Creating user failed in user repo 1")
-                                }));
+                                // res.status(500).json({
+                                //     error: console.log("Creating user failed in user repo 1")
+                                // }));
+                            responseMessages.Errorcode500(res);
+                            );
                     } catch (e) {
                         console.log("error saving user " + e);
                     }
