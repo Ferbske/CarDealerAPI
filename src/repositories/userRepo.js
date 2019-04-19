@@ -16,7 +16,7 @@ class UserRepository {
                     const token = auth.encodeToken(username);
 
                     console.log(newUser);
-                    
+
                     newUser.save()
                         .then(() => {
                             responseMessages.Successcode201CreateUser(res, token);
