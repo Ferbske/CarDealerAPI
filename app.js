@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const db = require("./dbCon");
+const cors = require('cors');
 
 app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
@@ -9,6 +10,8 @@ app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Content-Type,Access-Control-Allow-Headers,Authorization,X-Requested-With');
     next();
 });
+
+app.options('*', cors());
 
 app.use("/", require("./routes/authentication"));
 app.use("/car", require("./routes/car"));
