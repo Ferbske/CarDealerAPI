@@ -5,46 +5,61 @@ const Car = require('../src/car');
 const Employee = require('../src/employee');
 
 describe('Tests Delete Endpoints', () => {
+    let token = '';
+
     beforeEach((done) => {
         request(app)
-            .post('/car')
+            .post('/login')
             .send({
-                "chassisNumber": 56875687,
-                "brand": "TESTBRAND",
-                "fuelType": "TESTFUELTYPE",
-                "typeCar": "TESTTYPECAR"
+                "username": "MochaTest",
+                "password": "MochaTest1234"
             })
             .end((err, res) => {
+                token = res.body.token;
                 request(app)
-                    .post('/employee')
+                    .post('/car')
                     .send({
-                        "firstName": "EmployeeFirstName",
-                        "lastName": "EmployeeLastName",
-                        "department": "EmployeeDepartment",
-                        "job": "EmployeeJob"
+                        "chassisNumber": 56875687,
+                        "brand": "TESTBRAND",
+                        "fuelType": "TESTFUELTYPE",
+                        "typeCar": "TESTTYPECAR"
                     })
+                    .set('X-Access-Token', token)
                     .end((err, res) => {
                         request(app)
-                            .post('/customer')
+                            .post('/employee')
                             .send({
-                                "chassisNumber": 56875687,
-                                "firstName": "CustomerCreateTest",
-                                "lastName": "CustomerCreateTest",
-                                "age": 22,
-                                "street": "CustomerCreateTest",
-                                "houseNumber": 22,
-                                "postalCode": "CustomerCreateTest"
+                                "firstName": "EmployeeFirstName",
+                                "lastName": "EmployeeLastName",
+                                "department": "EmployeeDepartment",
+                                "job": "EmployeeJob"
                             })
+                            .set('X-Access-Token', token)
                             .end((err, res) => {
-                                done();
-                            });
-                    })
+                                request(app)
+                                    .post('/customer')
+                                    .send({
+                                        "chassisNumber": 56875687,
+                                        "firstName": "CustomerCreateTest",
+                                        "lastName": "CustomerCreateTest",
+                                        "age": 22,
+                                        "street": "CustomerCreateTest",
+                                        "houseNumber": 22,
+                                        "postalCode": "CustomerCreateTest"
+                                    })
+                                    .set('X-Access-Token', token)
+                                    .end((err, res) => {
+                                        done();
+                                    });
+                            })
+                    });
             });
     });
 
     it('Delete a Car', (done) => {
         request(app)
             .del('/car/0')
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 Car.findOne({ "chassisNumber": 0 })
                     .then((car) => {
@@ -57,6 +72,7 @@ describe('Tests Delete Endpoints', () => {
     it('Delete a Car without params so 404', (done) => {
         request(app)
             .del('/car/')
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 assert(res.status === 404);
                 done();
@@ -66,11 +82,13 @@ describe('Tests Delete Endpoints', () => {
     it('Delete a Employee', (done) => {
         request(app)
             .get('/employee')
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 Employee.find()
                     .then((employee) => {
                         request(app)
                             .del('/employee/' + employee[0]._id)
+                            .set('X-Access-Token', token)
                             .end((err, res) => {
                                 Employee.findOne({ "_id": employee[0]._id })
                                     .then((employee) => {
@@ -85,6 +103,7 @@ describe('Tests Delete Endpoints', () => {
     it('Delete a Employee without params so 404', (done) => {
         request(app)
             .del('/car/')
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 assert(res.status === 404);
                 done();
@@ -94,11 +113,13 @@ describe('Tests Delete Endpoints', () => {
     it('Delete a Customer', (done) => {
         request(app)
             .get('/car')
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 Car.find()
                     .then((car) => {
                         request(app)
                             .del('/customer/' + car[0].chassisNumber)
+                            .set('X-Access-Token', token)
                             .end((err, res) => {
                                 Car.findOne({ "chassisNumber": car[0].chassisNumber })
                                     .then((car) => {
@@ -113,6 +134,7 @@ describe('Tests Delete Endpoints', () => {
     it('Delete a Customer without params so 404', (done) => {
         request(app)
             .del('/customer/')
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 assert(res.status === 404);
                 done();

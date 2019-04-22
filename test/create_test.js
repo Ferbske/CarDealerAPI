@@ -5,6 +5,21 @@ const Car = require('../src/car');
 const Employee = require('../src/employee');
 
 describe('Tests Create Endpoints', () => {
+    let token = '';
+
+    before((done) => {
+        request(app)
+            .post('/login')
+            .send({
+                "username": "MochaTest",
+                "password": "MochaTest1234"
+            })
+            .end((err, res) => {
+                token = res.body.token;
+                done();
+            });
+    });
+
     it('Create a Car', (done) => {
         request(app)
             .post('/car')
@@ -14,6 +29,7 @@ describe('Tests Create Endpoints', () => {
                 "fuelType": "TESTFUELTYPE",
                 "typeCar": "TESTTYPECAR"
             })
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 Car.find()
                     .then((car) => {
@@ -30,6 +46,7 @@ describe('Tests Create Endpoints', () => {
         request(app)
             .post('/car')
             .send({})
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 assert(res.status === 412);
                 done();
@@ -44,6 +61,7 @@ describe('Tests Create Endpoints', () => {
                 "brand": "TESTBRAND",
                 "fuelType": "TESTFUELTYPE",
             })
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 assert(res.status === 412);
                 done();
@@ -89,6 +107,7 @@ describe('Tests Create Endpoints', () => {
                 "department": "EmployeeDepartment",
                 "job": "EmployeeJob"
             })
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 Employee.find()
                     .then((employee) => {
@@ -105,6 +124,7 @@ describe('Tests Create Endpoints', () => {
         request(app)
             .post('/employee')
             .send({})
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 assert(res.status === 412);
                 done()
@@ -119,6 +139,7 @@ describe('Tests Create Endpoints', () => {
                 "lastName": "EmployeeLastName",
                 "department": "EmployeeDepartment",
             })
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 assert(res.status === 412);
                 done()
@@ -160,6 +181,7 @@ describe('Tests Create Endpoints', () => {
                 "fuelType": "TESTFUELTYPE",
                 "typeCar": "TESTTYPECAR"
             })
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 request(app)
                     .post('/customer')
@@ -172,6 +194,7 @@ describe('Tests Create Endpoints', () => {
                         "houseNumber": 22,
                         "postalCode": "CustomerCreateTest"
                     })
+                    .set('X-Access-Token', token)
                     .end((err, res) => {
                         Car.findOne({ "chassisNumber": 56875687 })
                             .then((car) => {
@@ -196,11 +219,13 @@ describe('Tests Create Endpoints', () => {
                 "fuelType": "TESTFUELTYPE",
                 "typeCar": "TESTTYPECAR"
             })
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 request(app)
                     .post('/customer')
                     .send({
                     })
+                    .set('X-Access-Token', token)
                     .end((err, res) => {
                         assert(res.status === 412);
                         done();
@@ -217,6 +242,7 @@ describe('Tests Create Endpoints', () => {
                 "fuelType": "TESTFUELTYPE",
                 "typeCar": "TESTTYPECAR"
             })
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 request(app)
                     .post('/customer')
@@ -228,6 +254,7 @@ describe('Tests Create Endpoints', () => {
                         "street": "CustomerCreateTest",
                         "houseNumber": 22
                     })
+                    .set('X-Access-Token', token)
                     .end((err, res) => {
                         assert(res.status === 412);
                         done();

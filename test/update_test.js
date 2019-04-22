@@ -5,40 +5,54 @@ const Car = require('../src/car');
 const Employee = require('../src/employee');
 
 describe('Tests Update Endpoints', () => {
+    let token = '';
+
     beforeEach((done) => {
         request(app)
-            .post('/car')
+            .post('/login')
             .send({
-                "chassisNumber": 56875687,
-                "brand": "TESTBRAND",
-                "fuelType": "TESTFUELTYPE",
-                "typeCar": "TESTTYPECAR"
+                "username": "MochaTest",
+                "password": "MochaTest1234"
             })
             .end((err, res) => {
+                token = res.body.token;
                 request(app)
-                    .post('/employee')
+                    .post('/car')
                     .send({
-                        "firstName": "EmployeeFirstName",
-                        "lastName": "EmployeeLastName",
-                        "department": "EmployeeDepartment",
-                        "job": "EmployeeJob"
+                        "chassisNumber": 56875687,
+                        "brand": "TESTBRAND",
+                        "fuelType": "TESTFUELTYPE",
+                        "typeCar": "TESTTYPECAR"
                     })
+                    .set('X-Access-Token', token)
                     .end((err, res) => {
                         request(app)
-                            .post('/customer')
+                            .post('/employee')
                             .send({
-                                "chassisNumber": 56875687,
-                                "firstName": "CustomerCreateTest",
-                                "lastName": "CustomerCreateTest",
-                                "age": 22,
-                                "street": "CustomerCreateTest",
-                                "houseNumber": 22,
-                                "postalCode": "CustomerCreateTest"
+                                "firstName": "EmployeeFirstName",
+                                "lastName": "EmployeeLastName",
+                                "department": "EmployeeDepartment",
+                                "job": "EmployeeJob"
                             })
+                            .set('X-Access-Token', token)
                             .end((err, res) => {
-                                done();
-                            });
-                    })
+                                request(app)
+                                    .post('/customer')
+                                    .send({
+                                        "chassisNumber": 56875687,
+                                        "firstName": "CustomerCreateTest",
+                                        "lastName": "CustomerCreateTest",
+                                        "age": 22,
+                                        "street": "CustomerCreateTest",
+                                        "houseNumber": 22,
+                                        "postalCode": "CustomerCreateTest"
+                                    })
+                                    .set('X-Access-Token', token)
+                                    .end((err, res) => {
+                                        done();
+                                    });
+                            })
+                    });
             });
     });
 
@@ -51,6 +65,7 @@ describe('Tests Update Endpoints', () => {
                 "newFuelType": "Updatetest",
                 "newTypeCar": "Updatetest"
             })
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 Car.findOne({"chassisNumber": 56875687})
                     .then((car) => {
@@ -66,6 +81,7 @@ describe('Tests Update Endpoints', () => {
         request(app)
             .put('/car')
             .send({})
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 assert(res.status === 412);
                 done();
@@ -80,6 +96,7 @@ describe('Tests Update Endpoints', () => {
                 "newBrand": "Updatetest",
                 "newFuelType": "Updatetest",
             })
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 assert(res.status === 412);
                 done();
@@ -89,11 +106,13 @@ describe('Tests Update Endpoints', () => {
     it('Update a Employee', (done) => {
         request(app)
             .get('/employee')
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 Employee.find()
                     .then((employee) => {
                         request(app)
                             .put('/employee')
+                            .set('X-Access-Token', token)
                             .send({
                                 "employeeID": employee[0]._id,
                                 "newFirstName": "newFirstName",
@@ -118,11 +137,13 @@ describe('Tests Update Endpoints', () => {
     it('Update a Employee missing all values', (done) => {
         request(app)
             .get('/employee')
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 Employee.find()
                     .then((employee) => {
                         request(app)
                             .put('/employee')
+                            .set('X-Access-Token', token)
                             .send({
                             })
                             .end((err, res) => {
@@ -136,11 +157,13 @@ describe('Tests Update Endpoints', () => {
     it('Update a Employee missing a value', (done) => {
         request(app)
             .get('/employee')
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 Employee.find()
                     .then((employee) => {
                         request(app)
                             .put('/employee')
+                            .set('X-Access-Token', token)
                             .send({
                                 "employeeID": employee[0]._id,
                                 "newFirstName": "newFirstName",
@@ -167,6 +190,7 @@ describe('Tests Update Endpoints', () => {
                 "newHouseNumber": 44,
                 "newPostalCode": "UpdatedCustomer"
             })
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 Car.findOne({ chassisNumber: 56875687 })
                     .then((car) => {
@@ -186,6 +210,7 @@ describe('Tests Update Endpoints', () => {
             .put('/customer')
             .send({
             })
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 assert(res.status === 412);
                 done();
@@ -203,6 +228,7 @@ describe('Tests Update Endpoints', () => {
                 "newStreet": "UpdatedCustomer",
                 "newHouseNumber": 44
             })
+            .set('X-Access-Token', token)
             .end((err, res) => {
                 assert(res.status === 412);
                 done();
